@@ -124,3 +124,20 @@ function gutenberg_examples_02_register_block() {
 }
 add_action( 'init', 'gutenberg_examples_02_register_block' );
 ```
+
+To conditionally enqueue a style (or script) only on pages where your block is used, you can add a condition using `has_blocks`:
+
+```php
+<?php
+/*
+Plugin Name: Gutenberg Example Block Frontend Stylesheets
+*/
+function gutenberg_examples_enqueue_frontend_css() {
+   if (is_singular()) {
+        $id = get_the_ID();
+	if (has_block('gutenberg-examples/example-02-stylesheets', $id)) {
+		wp_enqueue_style('gutenberg-examples-02'); 
+	}
+   }
+}
+add_action( 'enqueue_block_assets', 'gutenberg_examples_enqueue_frontend_css' );
